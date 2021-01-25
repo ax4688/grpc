@@ -62,16 +62,20 @@ static grpc_end2end_test_fixture chttp2_create_fixture_fullstack_base(
 
 static grpc_end2end_test_fixture chttp2_create_fixture_fullstack(
     grpc_channel_args* /*client_args*/, grpc_channel_args* /*server_args*/) {
-  const std::string localaddr = absl::StrFormat(
-      "unix:/tmp/grpc_fullstack_test.%d.%d", getpid(), unique++);
+  gpr_timespec now = gpr_now(GPR_CLOCK_REALTIME);
+  const std::string localaddr =
+      absl::StrFormat("unix:/tmp/grpc_fullstack_test.%d.%ld.%d.%d", getpid(),
+                      (long)now.tv_sec, (int)now.tv_nsec, unique++);
   return chttp2_create_fixture_fullstack_base(localaddr);
 }
 
 static grpc_end2end_test_fixture
 chttp2_create_fixture_fullstack_abstract_namespace(
     grpc_channel_args* /*client_args*/, grpc_channel_args* /*server_args*/) {
-  const std::string localaddr = absl::StrFormat(
-      "unix-abstract:grpc_fullstack_test.%d.%d", getpid(), unique++);
+  gpr_timespec now = gpr_now(GPR_CLOCK_REALTIME);
+  const std::string localaddr =
+      absl::StrFormat("unix-abstract:grpc_fullstack_test.%d.%ld.%d.%d",
+                      getpid(), (long)now.tv_sec, (int)now.tv_nsec, unique++);
   return chttp2_create_fixture_fullstack_base(localaddr);
 }
 

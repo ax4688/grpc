@@ -32,9 +32,11 @@ static grpc_end2end_test_fixture chttp2_create_fixture_fullstack_uds(
     grpc_channel_args* /*client_args*/, grpc_channel_args* /*server_args*/) {
   grpc_end2end_test_fixture f =
       grpc_end2end_local_chttp2_create_fixture_fullstack();
+  gpr_timespec now = gpr_now(GPR_CLOCK_REALTIME);
   static_cast<grpc_end2end_local_fullstack_fixture_data*>(f.fixture_data)
-      ->localaddr = absl::StrFormat("unix:/tmp/grpc_fullstack_test.%d.%d",
-                                    getpid(), unique++);
+      ->localaddr =
+      absl::StrFormat("unix:/tmp/grpc_fullstack_test.%d.%ld.%d.%d", getpid(),
+                      (long)now.tv_sec, (int)now.tv_nsec, unique++);
   return f;
 }
 
